@@ -25,7 +25,7 @@ public class Game {
 
 
     public void Step() {
-        List<(int, int, int)> targets = new List<(int, int, int)>();
+        var targets = new List<(int, int, int)>();
 
         for(int x = 0; x < _width; x++) {
             for(int y = 0; y < _height; y++) {
