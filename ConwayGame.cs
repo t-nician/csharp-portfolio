@@ -25,7 +25,31 @@ public class Game {
 
 
     public void Step() {
+        List<(int, int, int)> targets = new List<(int, int, int)>();
 
+        for(int x = 0; x < _width; x++) {
+            for(int y = 0; y < _height; y++) {
+                switch (_grid[x, y]) {
+                    case 0:
+                        if (CountNeighbors(x, y) == 3) {
+                            targets.Add((x, y, 1));
+                        }
+                        break;
+                    
+                    case 1:
+                        int count = CountNeighbors(x, y);
+
+                        if (count > 3 || count < 2) {
+                            targets.Add((x, y, 0));
+                        }
+                        break;
+                }
+            }
+        }
+
+        foreach (var target in targets) {
+            _grid[target.Item1, target.Item2] = target.Item3;
+        }
     }
 
 
@@ -34,8 +58,21 @@ public class Game {
 
         for(int x = 0; x < _width; x++) {
             for(int y = 0; y < _height; y++) {
-                
+                switch (_grid[x, y]) {
+                    case 0:
+                        display = display + " ";
+                        break;  
+
+                    case 1:
+                        display = display + "#";
+                        break;
+
+                    default:
+                        break;
+                }
             }
+
+            display = display + "\n";
         }
 
         Console.WriteLine(display);

@@ -4,7 +4,12 @@
 Console.WriteLine("Hello, World!");
 
 
-Game game = new Game(10, 10);
+Game game = new Game(30, 30);
 
-Console.WriteLine(game.CountNeighbors(9, 9).ToString());
-game.Step();
+
+while (true) {
+    game.Output();
+    game.Step();
+
+    Thread.Sleep(60);
+}
