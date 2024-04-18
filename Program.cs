@@ -10,24 +10,17 @@ while (true) {
 }
 */
 
-while (true) {
-    var demo_options = new List<string>() { 
-        "Conways Game of Life",
-    };
+var demo_options = new List<string>() { 
+    "Conways Game of Life",
+};
 
+
+while (true) {
     switch (Inputter.Ask.Choice("Choose Demonstration", demo_options)) {
         case "conwaysgameoflife":
-            var game = new Conway.Game(10, 30);
-
-            while (true) {
-                game.Step();
-                game.Output();
-
-                Thread.Sleep(60);
-            }
-
+            new Conway.Game(10, 30).Loop(60);
             break;
-        
+
         
     }
 }

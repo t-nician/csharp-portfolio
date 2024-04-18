@@ -36,6 +36,16 @@ public class Game {
     }
 
 
+    public void Loop(int delay_miliseconds) {
+        while (true) {
+            Step();
+            Output();
+
+            Thread.Sleep(delay_miliseconds);
+        }
+    }
+
+
     public void Step() {
         var targets = new List<(int, int, CellState)>();
 
