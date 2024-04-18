@@ -22,8 +22,6 @@ public class Game {
 
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
-                //_grid[x, y] = rnd;
-
                 switch (rnd.Next(0, 2)) {
                     case 0:
                         _grid[x, y] = CellState.Dead;
@@ -68,7 +66,7 @@ public class Game {
 
 
     public void Output() {
-        String display = "";
+        string display = "";
 
         for(int x = 0; x < _width; x++) {
             for(int y = 0; y < _height; y++) {
@@ -89,6 +87,7 @@ public class Game {
             display = display + "\n";
         }
 
+        Console.Clear();
         Console.WriteLine(display);
     }
 
