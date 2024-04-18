@@ -1,9 +1,13 @@
 namespace Conway;
 
+enum CellState {
+    Alive,
+    Dead
+}
 
 public class Game {
 
-    private int[,] _grid;
+    private CellState[,] _grid;
 
     private int _width;
     private int _height;
@@ -12,35 +16,45 @@ public class Game {
     public Game(int width, int height) {
         _width = width;
         _height = height;
-        _grid = new int [width, height];
+        _grid = new CellState [width, height];
 
         Random rnd = new Random();
 
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
-                _grid[x, y] = rnd.Next(0, 2);
+                //_grid[x, y] = rnd;
+
+                switch (rnd.Next(0, 2)) {
+                    case 0:
+                        _grid[x, y] = CellState.Dead;
+                        break;
+                    
+                    case 1:
+                        _grid[x, y] = CellState.Alive;
+                        break;
+                }
             }
         }
     }
 
 
     public void Step() {
-        var targets = new List<(int, int, int)>();
+        var targets = new List<(int, int, CellState)>();
 
         for(int x = 0; x < _width; x++) {
             for(int y = 0; y < _height; y++) {
                 switch (_grid[x, y]) {
-                    case 0:
+                    case CellState.Dead:
                         if (CountNeighbors(x, y) == 3) {
-                            targets.Add((x, y, 1));
+                            targets.Add((x, y, CellState.Alive));
                         }
                         break;
                     
-                    case 1:
+                    case CellState.Alive:
                         int count = CountNeighbors(x, y);
 
                         if (count > 3 || count < 2) {
-                            targets.Add((x, y, 0));
+                            targets.Add((x, y, CellState.Dead));
                         }
                         break;
                 }
@@ -59,11 +73,11 @@ public class Game {
         for(int x = 0; x < _width; x++) {
             for(int y = 0; y < _height; y++) {
                 switch (_grid[x, y]) {
-                    case 0:
+                    case CellState.Dead:
                         display = display + " ";
                         break;  
 
-                    case 1:
+                    case CellState.Alive:
                         display = display + "#";
                         break;
 
@@ -80,12 +94,19 @@ public class Game {
 
 
     public int CountNeighbors(int x, int y) {
-        int result = -_grid[x, y];
+        int result = 0; //
+
+        if (_grid[x, y] == CellState.Alive) {
+            result -= 1;
+        }
 
         for(int offset_x = -1; offset_x < 2; offset_x++) {
             for (int offset_y = -1; offset_y < 2; offset_y++) { 
-                (int, int) target = wrap_index(x + offset_x, y + offset_y);
-                result += _grid[target.Item1, target.Item2];
+                (int, int) target = WrapIndex(x + offset_x, y + offset_y);
+
+                if (_grid[target.Item1, target.Item2] == CellState.Alive) {
+                    result += 1;
+                }
             }
         }
 
@@ -93,7 +114,7 @@ public class Game {
     }
 
 
-    private (int, int) wrap_index(int x, int y) {
+    private (int, int) WrapIndex(int x, int y) {
         (int, int) result = (x, y);
 
         if (x < 0) { result.Item1 = _width - 1; }
