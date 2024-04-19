@@ -1,6 +1,7 @@
 ﻿var demo_options = new List<string>() { 
     "Conways Game of Life",
     "Number Guessing Game",
+    "Blackjack"
 };
 
 
@@ -15,11 +16,15 @@ while (true) {
             );
             break;
 
+
         case "numberguessinggame":
             new NumberGuessing.Game(
                 Inputter.Ask.IntMinMax("Maximum number for guessing game.", 5, 10)
             ).Loop();
             break;
         
+        case "blackjack":
+            new Blackjack.Game().Loop();
+            break;
     }
 }
