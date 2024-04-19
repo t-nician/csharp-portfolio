@@ -6,6 +6,15 @@
 };
 
 
+var account_service = new AccountService();
+
+var get_account = account_service.GetAccountByUsername("username");
+var account = account_service.CreateAccount("username", "password");
+
+
+Console.WriteLine(get_account.IsSuccess().ToString() + " " + get_account.GetMessage());
+
+
 while (true) {
     switch (Inputter.Ask.Choice("Choose Demonstration", demo_options)) {
         case "conwaysgameoflife":
@@ -30,7 +39,7 @@ while (true) {
 
 
         case "accountdatabase":
-            
+
             break;
     }
 }
