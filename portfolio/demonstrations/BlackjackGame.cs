@@ -85,29 +85,39 @@ public class Hand {
 
 
 class DealerAI {
+    private Hand _dealer_hand;
+    private Hand _player_hand;
 
+    public DealerAI(Hand dealer_hand, Hand player_hand) {
+        _dealer_hand = dealer_hand;
+        _player_hand = player_hand;
+    }
+
+
+    public bool Play() {
+
+        return false;
+    }
 }
 
 
 public class Game {
-    private Hand _dealer;
-    private Hand _player;
+    private Hand _player_hand;
+    private Hand _dealer_hand;
+    private DealerAI _dealer_ai;
 
 
     public Game() {
-        _dealer = new Hand();
-        _player = new Hand();
+        _player_hand = new Hand();
+        _dealer_hand = new Hand();
+
+        _dealer_ai = new DealerAI(_dealer_hand, _player_hand);
     }
 
 
     public void Loop() {
-        /*var (min, max) = _player.GetHandValue();
-
-        Console.WriteLine(min.ToString() + " " + max.ToString());
-
-        Thread.Sleep(5000);*/
         while (true) {
-            var (min, max) = _player.GetHandValue();
+            var (min, max) = _player_hand.GetHandValue();
 
             Console.Clear();
             Console.WriteLine("Current Hand\nMinimum Value: " + min.ToString() + "\nMaximum Value: " + max.ToString());
@@ -116,9 +126,20 @@ public class Game {
                 "[Your Hand]\nMinimum Value: " + min.ToString() + "\nMaximum Value: " + max.ToString() + "\n\nChoose your move.\n", new List<string>() { "Hit", "Stand" });
 
             if (hit == "hit") {
-                _player.AddCard();
-            } else {
+                _player_hand.AddCard();
 
+                (min, _) = _player_hand.GetHandValue();
+
+                if (min > 21) {
+                    Console.Clear();
+                    Console.WriteLine("Bust! You went over 21 points.\nYou had: " + min.ToString());
+
+                    Thread.Sleep(5000);
+
+                    break;
+                }
+            } else if (hit == "stand") {
+                _dealer_ai.Play();
             }
             
         }
