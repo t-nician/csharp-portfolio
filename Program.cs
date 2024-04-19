@@ -18,7 +18,7 @@ var demo_options = new List<string>() {
 while (true) {
     switch (Inputter.Ask.Choice("Choose Demonstration", demo_options)) {
         case "conwaysgameoflife":
-            new Conway.Game(10, 30).Loop(60);
+            new Conway.Game(10, 30).Loop(Inputter.Ask.IntMinMax("Input delay(miliseconds) for each game update.", 30, 1000));
             break;
 
         

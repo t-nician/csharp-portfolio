@@ -31,4 +31,22 @@ public class Ask() {
             }
         }
     }
+
+
+    static public int IntMinMax(string question, int minimum, int maximum) {
+        string prepped_range = "Choose between " + minimum.ToString() + " and " + maximum.ToString();
+
+        while (true) {
+            Console.Clear();
+            Console.WriteLine(question + "\n" + prepped_range);
+
+            int number;
+
+            if (int.TryParse(Console.ReadLine(), out number)) {
+                if (number >= minimum && number <= maximum) {
+                    return number;
+                }
+            }
+        }
+    }
 }
