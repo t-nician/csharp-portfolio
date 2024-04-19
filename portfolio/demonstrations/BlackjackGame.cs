@@ -160,24 +160,16 @@ public class Game {
                 var (min, _) = _player_hand.GetHandValue();
 
                 if (min > 21) {
-                    Console.Clear();
-                    Console.WriteLine("Bust! You went over 21 points.\nYou had: " + min.ToString());
-
-                    Thread.Sleep(5000);
-
+                    Prompt("Bust! You went over 21 points.\nYou had: " + min.ToString(), 5000);
                     break;
                 }
             } else if (hit == "stand") {
                 bool dealer_won = _dealer_ai.Play();
 
                 if (dealer_won) {
-                    Console.Clear();
-                    Console.WriteLine("The dealer has beaten your hand!");
-                    Thread.Sleep(3000);
+                    Prompt("The dealer has beaten your hand!", 3000);
                 } else {
-                    Console.Clear();
-                    Console.WriteLine("The dealer has busted! You won!");
-                    Thread.Sleep(3000);
+                    Prompt("The dealer has busted! You won!", 3000);
                 }
 
                 _dealer_hand.EmptyHand();
@@ -187,7 +179,9 @@ public class Game {
         }
     }
 
-    private void Prompt() {
-
+    private void Prompt(string message, int delay_miliseconds) {
+        Console.Clear();
+        Console.WriteLine(message);
+        Thread.Sleep(delay_miliseconds);
     }
 }
