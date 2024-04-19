@@ -8,7 +8,8 @@ public class Ask() {
         var fixed_options = new List<string>();
 
         foreach (string option in options) {
-            compiled_options = compiled_options + option + ", ";
+            
+            compiled_options = compiled_options + "(" + fixed_options.Count.ToString() + ") " + option + "\n";
             fixed_options.Add(option.Trim().Replace(" ", "").ToLower());
         }
 
@@ -21,6 +22,15 @@ public class Ask() {
             var response = Console.ReadLine();
 
             if (response != null) {
+                
+                int num;
+
+                if (int.TryParse(response, out num)) {
+                    if (num < fixed_options.Count) {
+                        return fixed_options[num];
+                    }
+                }
+                
                 response = response.Trim().Replace(" ", "").ToLower();
                 
                 foreach (var option in fixed_options) {
