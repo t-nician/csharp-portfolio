@@ -60,10 +60,20 @@ public class Hand {
     }
 
 
+    public string GetHandValueDisplay(string hand_name) {
+        var (min, max) = GetHandValue();
+        return "[" + hand_name + " Hand]\nMinimum Value: " + min.ToString() + "\nMaximum Value: " + max.ToString() + "\n";
+    }
+
+
     public (int, int) GetHandValue() {
         return (_min_hand_value, _max_hand_value);
     }
 
+    public void EmptyHand() {
+        _cards.Clear();
+        UpdateHandValue();
+    }
 
     private void UpdateHandValue() {
         var (min_value, max_value) = (0, 0);
@@ -95,8 +105,32 @@ class DealerAI {
 
 
     public bool Play() {
+        var (_, player_max) = _player_hand.GetHandValue();
 
-        return false;
+        while (true) {
+            var (dealer_min, dealer_max) = _dealer_hand.GetHandValue();
+
+            Prompt(_dealer_hand.GetHandValueDisplay("Dealer's") + "\n" + _player_hand.GetHandValueDisplay("Your"), 2000);
+
+            if (dealer_min > 21) {
+                return false;
+            }
+
+            if (dealer_max < player_max || dealer_max == player_max) {
+                _dealer_hand.AddCard();
+
+                Prompt("Dealer drew a card...", 2000);
+            } else {
+                return true;
+            }
+        }
+    }
+
+
+    private void Prompt(string message, int delay_miliseconds) {
+        Console.Clear();
+        Console.WriteLine(message);
+        Thread.Sleep(delay_miliseconds);
     }
 }
 
@@ -114,21 +148,16 @@ public class Game {
         _dealer_ai = new DealerAI(_dealer_hand, _player_hand);
     }
 
-
     public void Loop() {
         while (true) {
-            var (min, max) = _player_hand.GetHandValue();
-
-            Console.Clear();
-            Console.WriteLine("Current Hand\nMinimum Value: " + min.ToString() + "\nMaximum Value: " + max.ToString());
-
             var hit = Inputter.Ask.Choice(
-                "[Your Hand]\nMinimum Value: " + min.ToString() + "\nMaximum Value: " + max.ToString() + "\n\nChoose your move.\n", new List<string>() { "Hit", "Stand" });
+                _player_hand.GetHandValueDisplay("Your") + "\nChoose your move.\n", new List<string>() { "Hit", "Stand" }
+            );
 
             if (hit == "hit") {
                 _player_hand.AddCard();
 
-                (min, _) = _player_hand.GetHandValue();
+                var (min, _) = _player_hand.GetHandValue();
 
                 if (min > 21) {
                     Console.Clear();
@@ -139,9 +168,26 @@ public class Game {
                     break;
                 }
             } else if (hit == "stand") {
-                _dealer_ai.Play();
+                bool dealer_won = _dealer_ai.Play();
+
+                if (dealer_won) {
+                    Console.Clear();
+                    Console.WriteLine("The dealer has beaten your hand!");
+                    Thread.Sleep(3000);
+                } else {
+                    Console.Clear();
+                    Console.WriteLine("The dealer has busted! You won!");
+                    Thread.Sleep(3000);
+                }
+
+                _dealer_hand.EmptyHand();
+                _player_hand.EmptyHand();
             }
             
         }
+    }
+
+    private void Prompt() {
+
     }
 }
