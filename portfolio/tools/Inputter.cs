@@ -23,19 +23,19 @@ public class Ask() {
 
             if (response != null) {
                 
-                int num;
-
-                if (int.TryParse(response, out num)) {
-                    if (num < fixed_options.Count) {
-                        return fixed_options[num];
-                    }
-                }
-                
                 response = response.Trim().Replace(" ", "").ToLower();
                 
                 foreach (var option in fixed_options) {
                     if (option == response) {
                         return response;
+                    }
+                }
+
+                int num;
+
+                if (int.TryParse(response, out num)) {
+                    if (num < fixed_options.Count) {
+                        return fixed_options[num];
                     }
                 }
             }
