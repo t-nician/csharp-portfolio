@@ -59,4 +59,24 @@ public class Ask() {
             }
         }
     }
+
+
+    static public bool YesNo(string question) {
+        while (true) {
+            Console.Clear();
+            Console.WriteLine(question + "\nyes/no or y/n");
+
+            var response = Console.ReadLine();
+
+            if (response != null) {
+                string stripped = response.Trim().Substring(0, 1).ToLower();
+
+                if (stripped == "y") {
+                    return true;
+                } else if (stripped == "n") {
+                    return false;
+                }
+            }
+        }
+    }
 }
