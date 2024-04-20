@@ -54,6 +54,20 @@ public class Ask
     }
 
 
+    public static int IntRange(string message, int minimum, int maximum) 
+    {
+        while (true) 
+        {
+            int response = Int(message + "\nNumbers " + minimum.ToString() + " through " + maximum.ToString() + "...");
+
+            if (response >= minimum && response <= maximum) 
+            {
+                return response;
+            }
+        }
+    }
+
+
     public static string Prompt(string message)
     {
         Console.Clear();
