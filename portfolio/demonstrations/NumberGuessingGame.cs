@@ -2,25 +2,22 @@ namespace NumberGuessingGame;
 
 
 public class GuessingGameSession {
-    private int _minimumNumber;
-    private int _maximumNumber;
+    const int MINIMUM = 0;
+    const int MAXIMUM = 11;
 
     private int _answerNumber;
     private int _attempts;
 
 
-    public GuessingGameSession(int minimum, int maximum)
+    public GuessingGameSession()
     {
-        _minimumNumber = minimum;
-        _maximumNumber = maximum;
-
         NewAnswer();
     }
 
 
     private void NewAnswer()
     {
-        _answerNumber = Random.Shared.Next(_minimumNumber, _maximumNumber);
+        _answerNumber = Random.Shared.Next(MINIMUM, MAXIMUM);
         _attempts = 0;
     }
 
@@ -29,7 +26,7 @@ public class GuessingGameSession {
     {
         while (true)
         {
-            int guessedNumber = Input.Ask.IntRange("Guess the number!", _minimumNumber, _maximumNumber - 1);
+            int guessedNumber = Input.Ask.IntRange("Guess the number!", MINIMUM, MAXIMUM - 1);
 
             if (guessedNumber == _answerNumber)
             {
